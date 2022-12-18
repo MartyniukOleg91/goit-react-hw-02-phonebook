@@ -1,21 +1,26 @@
+import React, { useState } from "react";
+
+
 export const App = () => {
+  const [count, setCount] = useState(0);
+   const [value, setValue] = useState(' ');
+ function increment(params) {
+  setCount(count + 1)
+ }
+
+  function decrement(params) {
+   setCount(count - 1)
+ }
   return (
-    <div
-      style={{
-        height: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: 20,
-        color: '#010101'
-      }}
-    >
-     <h1>Phonebook</h1>
-       
-        <h2> Contacts</h2>
-        
-        
-    </div>
+    
+    <>
+      <h1>{count}</h1>
+      <h2>{value}</h2>
+      <input type='text' value={value}
+      onChange={event => setValue(event.target.value)}/>
+      <button onClick={increment}>плюс</button>
+      <button onClick={decrement}>мінус</button>
+    </>
   );
 };
+
