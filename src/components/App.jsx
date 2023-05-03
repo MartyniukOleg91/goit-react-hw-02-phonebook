@@ -13,33 +13,33 @@ export class App extends Component {
       { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
     ],
     filter: '',
-    name: '',
-    number: '',
   };
 
   handleChange = e => {
-    const { name, value } = e.target;
-    this.setState({ [name]: value });
+    this.setState({ filter: e.target.value });
   };
 
-  handleSubmit = e => {
-    const id = nanoid();
-    const name = e.name;
-    const number = e.number;
-    const contactsLists = [...this.state.contacts];
+  handleSubmit = newContact => {
+    const isExist = this.state.contacts.some(
+      contact =>
+        contact.name.toLocaleLowerCase() === newContact.name.toLocaleLowerCase()
+    );
 
-    if (contactsLists.findIndex(contact => name === contact.name) !== -1) {
-      alert(`${name} is already in contacts.`);
-    } else {
-      contactsLists.push({ name, id, number });
+    if (isExist) {
+      alert(`${newContact.name} is already in contacts.`);
+      return;
     }
 
-    this.setState({ contacts: contactsLists });
+    this.setState(prevState => {
+      return {
+        contacts: [{ ...newContact, id: nanoid() }, ...prevState.contacts],
+      };
+    });
   };
 
-  handleDelete = e => {
+  handleDelete = id => {
     this.setState(prevState => ({
-      contacts: prevState.contacts.filter(contact => contact.id !== e),
+      contacts: prevState.contacts.filter(contact => contact.id !== id),
     }));
   };
 
@@ -72,10 +72,12 @@ export class App extends Component {
         <ContactForm handleSubmit={this.handleSubmit} />
         <h2> Contacts</h2>
         <Filter filter={filter} handleChange={this.handleChange} />
-        <ContactList
-          contacts={this.getFilteredContacts()}
-          handleDelete={this.handleDelete}
-        />
+        {this.state.contacts.length !== 0 && (
+          <ContactList
+            contacts={this.getFilteredContacts()}
+            handleDelete={this.handleDelete}
+          />
+        )}
       </div>
     );
   }
