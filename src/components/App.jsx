@@ -89,7 +89,9 @@ export class App extends Component {
           style={{
             display: 'flex',
             justifyContent: 'center',
+            alignItems: 'center',
             width: '200px',
+            height: '50px',
             color: 'red',
             border: 'thick double #32a1ce',
           }}
